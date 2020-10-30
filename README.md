@@ -2,8 +2,8 @@
 
 Greetings! This repository is the code for the paper:
 
-> Feature Shift Detection: Localizing Which Features Have Shifted via Conditional Distribution Tests
-> Sean M. Kulinski, Saurabh Bagchi, David I. Inouye
+> Feature Shift Detection: Localizing Which Features Have Shifted via Conditional Distribution Tests \
+> Sean M. Kulinski, Saurabh Bagchi, David I. Inouye \
 > *Neural Information Processing Systems* (NeurIPS), 2020.
 
 If you use this code, please do us a favor and cite this paper via:
@@ -51,4 +51,4 @@ If you have any questions or issues, please reach out via my email:
 
 > skulinsk AT purdue DOT edu
 
-Cheers,
+Cheers!

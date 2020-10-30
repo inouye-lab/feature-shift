@@ -1,0 +1,30 @@
+# Jupyter Notebook
+.ipynb_checkpoints*
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Cache files
+.cache/
+.pytest_cache/
+.coverage
+
+# Compiled source
+*~$*
+*.blg
+*.bbl
+*.asv
+*.m~
+*.dvi
+*.ps
+*.aux
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# IDE
+.idea

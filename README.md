@@ -11,7 +11,7 @@ If you use this code, please do us a favor and cite this paper via:
 ```bibtext
 @inproceedings{kulinski2020feature,
 author = {Kulinski, Sean M and Bagchi, Saurabh and Inouye, David I.},
-booktitle = {Neural Information Processing Systems},
+booktitle = {Neural Information Processing Systems (NeurIPS)},
 title = {Feature Shift Detection: Localizing Which Features Have Shifted via Conditional Distribution Tests},
 year = {2020}
 }

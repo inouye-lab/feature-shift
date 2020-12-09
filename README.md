@@ -43,9 +43,9 @@ In order to reproduce the experiments, first setup a python environment matching
 $ python unknown-multiple-sensors.py
 ```
 
-To reproduce the real-world experiments, after setting up the python enviroment above, then call `$ python path-to-feature-shift/scripts/real-world-experiments/fetch-data.py ARGUMENT'
+To reproduce the real-world experiments, after setting up the python enviroment above, then call `$ python path-to-feature-shift/scripts/real-world-experiments/fetch-data.py ARGUMENT`
 
-Where ARGUMENT can be either: all, gas, energy, or covid. *e.g.* to download all datasets use, `$ python feature-shift/scripts/real-world-experiments/fetch-data.py all`.
+Where ARGUMENT can be either: all, gas, energy, or covid. (*e.g.* to download all datasets use, `$ python feature-shift/scripts/real-world-experiments/fetch-data.py all`).
 
 ## Contact
 

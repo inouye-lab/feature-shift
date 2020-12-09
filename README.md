@@ -1,11 +1,9 @@
 # Feature Shift
 
-Greeting! This repository is the code for the paper:
+Greetings! This repository is the code for the paper:
 
-> Feature Shift Detection: Localizing Which Features Have Shifted via Conditional Distribution Tests
->
-> Sean M. Kulinski, Saurabh Bagchi, David I. Inouye
->
+> Feature Shift Detection: Localizing Which Features Have Shifted via Conditional Distribution Tests \
+> Sean M. Kulinski, Saurabh Bagchi, David I. Inouye \
 > *Neural Information Processing Systems* (NeurIPS), 2020.
 
 If you use this code, please do us a favor and cite this paper via:
@@ -13,7 +11,7 @@ If you use this code, please do us a favor and cite this paper via:
 ```bibtext
 @inproceedings{kulinski2020feature,
 author = {Kulinski, Sean M and Bagchi, Saurabh and Inouye, David I.},
-booktitle = {Neural Information Processing Systems},
+booktitle = {Neural Information Processing Systems (NeurIPS)},
 title = {Feature Shift Detection: Localizing Which Features Have Shifted via Conditional Distribution Tests},
 year = {2020}
 }
@@ -25,9 +23,9 @@ year = {2020}
 
 > In many real world scenarios the data used by machine learning models shifts away from the distribution the models were trained on. Is there a way we can not only detect when this happens, but also localize that shift to specific features in the data?
 
-Distribution shift is a very real and frequent problem in machine learning production environments. Recently, there has been much research looking into detecting when such a shift has happened, and our work extends this idea to not only detecting a shift, but also localizing the shift to specific problem features in the data. A simple example of this would be if a model was trained on a sensor network consisting of common sensors such as temperature, vibration, noise-levels, etc., and after a while, a couple sensors begin to malfunction and output incorrect values. When the shift is detected, if it could also be localized to these problem sensors, then the issue can be swiftly confirmed and remediated. 
+Distribution shift is a very real and frequent problem in machine learning production environments. Recently, there has been much research looking into detecting when such a shift has happened, and our work extends this idea to not only detecting a shift, but also localizing the shift to specific problem features in the data. A simple example of this would be if a model was trained on a sensor network and, after a while of being in use, some sensors begin to malfunction and output incorrect values. If we could detect this shift early and even localize the shift to these problem sensors, then the issue can be swiftly debugged and remediated. 
 
-Our goal for feature shift detection is to do exactly this. We use hypothesis testing to see if there is a discrepancy between the feature-wise conditional distributions of the training and query distribution. We perform this for all features and report the ones which have a discrepancy. To do this, we introduce a novel use test statistic based on the (Fisher) score function, which can compute the conditional distribution hypothesis test quite efficiently. 
+Our goal for feature shift detection is to do exactly this; detecting a shift and localizing the shift to specific features. We perform hypothesis testing to see if there is a discrepancy between the feature-wise conditional distributions of the training and query distribution. We perform this for all features and report the ones which have a discrepancy. To do this, we introduce a novel use of a test statistic based on the (Fisher) score function, which can compute these conditional distribution hypothesis test quite efficiently. 
 
 ## Basic Structure of  Feature Shift Detector module
 
@@ -55,4 +53,6 @@ If you have any questions or issues, please reach out via my email:
 
 > skulinsk AT purdue DOT edu
 
-Cheers,
+
+Cheers!
+

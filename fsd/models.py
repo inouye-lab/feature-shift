@@ -76,10 +76,9 @@ class GaussianDensity:
         torch.manual_seed(rng.randint(10000))  # sets the torch seed using the rng from numpy
         return self.density_.sample((n_samples,)).numpy()
 
-    def conditional_sample(self,  x, feature_idx, n_samples=1, random_state=None):
+    def conditional_sample(self, x, feature_idx, n_samples=1, random_state=None):
         """
-        Computes the conditional distribution of the ith feature of the density and samples from the conditional
-        ref: https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf   page 40.
+        Computes the conditional distribution of the jth feature of the density and samples from the conditional
 
         Parameters
         ----------
@@ -87,7 +86,7 @@ class GaussianDensity:
             The sample which we are going to be conditioning on. More specifically, we will be condtioning on the value
             of the jth feature in x.
         feature_idx: int
-            The index of the feature which we will compute the conditional distribution of (i.e. p(x_j | x_{-j}))
+            The index of the feature which we will compute the conditional distribution of (i.e. p(x_j | x_{-j})) 
         n_samples: int, optional (default=1)
             The number of sample to sample from the conditional distribution
         random_state: int, RandomState instance, or None, optional (default=None)
@@ -103,30 +102,10 @@ class GaussianDensity:
         """
         self._check_fitted()
         rng = check_random_state(random_state)
-        x_nj = np.delete(x, feature_idx)
-        means = self.mean_.copy().reshape(-1)
-        cov = self.covariance_.copy()
-        # making it so that j (feature_idx) is the first column
-        # i.e. \Simga = [ [var(x_j), cov(x_j, x_{-j})], [cov(x_{-j}, x_j), cov(x_j, x_j)] ]
-        indices = np.arange(means.shape[0])
-        indices[[0, feature_idx]] = indices[[feature_idx, 0]]
-        means = means[indices]
-        cov = cov[np.ix_(indices, indices)]
-
-        cov_11 = cov[0,0]
-        cov_12 = cov[0, 1:]
-        cov_22 = cov[1:, 1:]
-        cov_22_inv = np.linalg.inv(cov_22)
-
-        # testing
-        jn_1 = means[0]
-        jn_2 = cov_12 @ cov_22_inv @ (x_nj - means[1:])
-        jn3 = jn_1 + jn_1
-        # testing
-
-        conditional_mean = means[0] + cov_12 @ cov_22_inv @ (x_nj - means[1:])
-        conditional_cov = cov_11 - cov_12 @ cov_22_inv @ cov_12.T
-        conditional_samples = rng.normal(loc=conditional_mean, scale=conditional_cov, size=n_samples)
+        conditional_mean, conditional_var = self._calculate_1d_guassian_conditional(x, feature_idx,
+                                                joint_mean=self.mean_, joint_cov=self.covariance,
+                                                random_state=rng)
+        conditional_samples = rng.normal(loc=conditional_mean, scale=conditional_var[0], size=n_samples)
         return conditional_samples
 
     def gradient_log_prob(self, X):
@@ -178,6 +157,51 @@ class GaussianDensity:
         print(X.shape)
         return self.density_.log_prob(X).numpy()
 
+    @staticmethod
+    def _calculate_1d_guassian_conditional(x, feature_idx, joint_mean, joint_cov, random_state=None):
+        """
+        Computes the conditional distribution of the ith feature of the density and samples from the conditional
+        ref: https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf   page 40.
+
+        Parameters
+        ----------
+        x: array-like, shape (n_features)
+            The sample which we are going to be conditioning on. More specifically, we will be condtioning on the value
+            of the jth feature in x.
+        feature_idx: int
+            The index of the feature which we will compute the conditional distribution of (i.e. p(x_j | x_{-j}))
+        joint_mean: array-like, shape (n_features)
+            The mean vector of the joint model
+        joint_cov: array-like, shape (n_features, n_features)
+            The covaraince matrix of the joint model
+            
+        Returns
+        -------
+        conditional_mean: float
+            The mean of the univariate conditional distribution
+        conditional_variance: float
+            The variance of the univariate conditional distribution
+        """
+        rng = check_random_state(random_state)
+        mask = np.ones(len(x), dtype=bool)
+        mask[feature_idx] = False
+        x_nj = x[mask]
+        means = np.array(joint_mean).flatten()
+        
+        # making it so that j (feature_idx) is the first column
+        # i.e. \Simga = [ [var(x_j), cov(x_j, x_{-j})], [cov(x_{-j}, x_j), cov(x_j, x_j)] ]
+
+        cov_11 = joint_cov[np.ix_(~mask, ~mask)]
+        cov_12 = joint_cov[np.ix_(~mask, mask)]
+        cov_22 = joint_cov[np.ix_(mask, mask)]
+        cov_22_inv = np.linalg.inv(cov_22)
+
+        conditional_mean = means[~mask] + cov_12 @ cov_22_inv @ (x_nj - means[mask])
+        conditional_var = cov_11 - cov_12 @ cov_22_inv @ cov_12.T
+        
+        return conditional_mean, conditional_var
+    
+    
     def _check_fitted(self, error_message=None):
         if self.density_ is None:
             if error_message is None:

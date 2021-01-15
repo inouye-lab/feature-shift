@@ -176,7 +176,8 @@ class FeatureShiftDetector:
                     X, Y = XY[:self.n_window_samples], XY[self.n_window_samples:]
 
             bootstrap_score_distribution[B_idx] = self.statistic.fit(X, Y).score_features(random_state=rng)
-
+            
+        bootstrap_score_distribution = np.sort(bootstrap_score_distribution, axis=0)
         # We use the bonferroni correction for multiple hypothesis by dividing the detection significance level by n_dim
         detection_thresholds = \
             bootstrap_score_distribution[int(self.n_bootstrap_samples * (1-self.significance_level/X_boot.shape[1]))]

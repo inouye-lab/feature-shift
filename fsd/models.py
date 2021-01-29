@@ -45,9 +45,9 @@ class GaussianDensity:
         self : the fitted instance"""
 
         X = check_array(X)
-        self.mean_ = X.mean(axis=0)
-        self.covariance_ = np.cov(X, rowvar=False)
-        self.covariance_ += 1e-5 * np.eye(X.shape[1])  # Adds epsilon in case emperical covaraince is not psd
+        self.mean_ = X.mean(axis=0).astype(np.float64)
+        self.covariance_ = np.cov(X, rowvar=False) + 1e-5 * np.eye(X.shape[1])
+        self.covariance_ = self.covariance_.astype(np.float64)
         self.density_ = MultivariateNormal(loc=torch.from_numpy(self.mean_),
                                                     covariance_matrix=torch.from_numpy(self.covariance_))
         return self
